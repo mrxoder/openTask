@@ -47,7 +47,7 @@
             display: flex; justify-content: space-between; align-items: center;
         }
 
-        .container { max-width: 800px; margin: 0 auto; width: 100%; padding: 2rem; overflow-y: auto; }
+        .container { max-width: 800px; margin: 0 auto; width: 100%; padding: 2rem; overflow-y: auto; min-height:90vh;}
 
         /* Drag and Drop Styling */
         .task-card {
@@ -91,6 +91,58 @@
         }
         .mobile-toggle { display: none; background: none; border: none; cursor: pointer; }
         .hidden { display: none; }
+        
+        
+         .app-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            font-size: 13px;
+            color: #6b7280; /* slate-500 */
+            background: #ffffff;
+            border-top: 1px solid #e5e7eb;
+            z-index: 100;
+          }
+        
+          .footer-text {
+            opacity: 0.85;
+            white-space: nowrap;
+          }
+        
+          .support-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #2563eb; /* blue-600 */
+            font-weight: 500;
+            text-decoration: none;
+            transition: opacity 0.2s ease, transform 0.15s ease;
+          }
+        
+          .support-link:hover {
+            opacity: 0.85;
+            transform: translateY(-1px);
+          }
+        
+          .support-icon {
+            width: 16px;
+            height: 16px;
+          }
+        
+          /* Mobile layout */
+          @media (max-width: 480px) {
+            .app-footer {
+              height: auto;
+              padding: 10px 8px;
+              flex-direction: column;
+              gap: 4px;
+            }
     </style>
 </head>
 <body>
@@ -110,8 +162,9 @@
     </aside>
     
     <div id="overlay" onclick="toggleSidebar(false)"></div>
-
+    
     <main id="main">
+        
         <header>
             <div style="display: flex; align-items: center; gap: 1rem;">
                 <button class="mobile-toggle" onclick="toggleSidebar(true)">
@@ -141,8 +194,36 @@
                 <p>Choose a project to begin.</p>
             </div>
         </div>
+        <footer class="app-footer">
+          <span class="footer-text">© Open Task </span>
+        
+          <a
+            href="https://mrxoder.github.io/support"
+            target="_blank"
+            rel="noopener"
+            class="support-link"
+            aria-label="Support the developer"
+          >
+            <svg
+              class="support-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12 21s-7-4.35-7-9.2C5 8.42 7.42 6 10.4 6c1.6 0 3.07.78 3.6 2 .53-1.22 2-2 3.6-2C20.58 6 23 8.42 23 11.8 23 16.65 12 21 12 21z"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            Support the developer
+          </a>
+        </footer>
+        
     </main>
-
+    
     <div id="jsonModal" class="modal">
         <div class="modal-content">
             <h3 style="margin-bottom: 1rem;">JSON Import Format</h3>
@@ -164,8 +245,13 @@
             <button class="btn btn-primary" style="margin-top: 1.5rem; width: 100%; justify-content: center;" onclick="toggleModal(false)">Got it</button>
         </div>
     </div>
-
+    
     <script>
+        
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.register('/sw.js');
+        }
+        
         let state = {
             projects: JSON.parse(localStorage.getItem('protrack_data')) || [],
             activeProjectId: null
@@ -298,4 +384,5 @@
         render();
     </script>
 </body>
+
 </html>
